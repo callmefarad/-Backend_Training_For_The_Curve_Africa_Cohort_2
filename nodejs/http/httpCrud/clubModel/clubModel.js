@@ -61,6 +61,7 @@ const updateClub = (id, updatedExistingClub) => {
 const deleteClub = (id) => {
     return new Promise( ( resolve, reject ) => {
         filteredClub = clubDB.filter( ( item ) => item.id !== id )
+        fs.unlinkSync( './clubDB/clubDB.json' );
         fs.writeFileSync( './clubDB/clubDB.json', JSON.stringify( filteredClub ), 'utf8', (error) => {
             if ( error ) {
                 console.log( error );
@@ -68,6 +69,8 @@ const deleteClub = (id) => {
                 console.log("Club updated successfully.")
             }
         } )
+
+        
         resolve();
     })
 }

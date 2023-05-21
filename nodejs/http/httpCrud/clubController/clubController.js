@@ -129,7 +129,6 @@ const deleteAnExistingClub = async (req, res, id) => {
         } else {
             await deleteClub( club )
             res.writeHead( 200, { 'Content-Type': 'application/json' } )
-            console.log("success")
             res.end( 'deleted' )
         }
     } catch ( e ) {
