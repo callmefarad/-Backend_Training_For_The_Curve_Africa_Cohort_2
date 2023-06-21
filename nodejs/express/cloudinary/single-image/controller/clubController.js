@@ -1,22 +1,22 @@
 const clubModel = require( '../model/clubModel' );
-const cloudinary = require( "cloudinary" ).v2;
+const {cloudinary, upload} = require('../utils/cloudinary')
 
 const createClub = async (req, res) => {
     try {
         const { league, club } = req.body;
 
         const result = await cloudinary.uploader.upload( req.file.path );
+        // const result = await clubModel.upload.single( 'logo' )( req, res );
+        console.log( result );
         // const publicId = getPublicIdFromUrl( req.file.path );
         const newClub = new clubModel( {
             league,
             club,
             logo: result.secure_url,
-            // logo: req.file.path,
-            publicId: result.public_id,
+            // publicId: result.public_id,
         } )
         
         const savedClub = await newClub.save();
-        // console.log(`old club: ${savedClub}`);
         if ( !savedClub ) {
             res.status( 400 ).json( {
                 message: "Unable to create club"
@@ -83,25 +83,24 @@ const updateClub = async ( req, res ) => {
       return res.status(404).json({ error: 'club not found' });
     }
 
-    if (req.file) {
-      // Delete the previous image from Cloudinary
-      await cloudinary.uploader.destroy(clubs.logo);
-    } else {
-        // Upload the new image to Cloudinary
-        const result = await cloudinary.uploader.upload( req.file.path );
+        await cloudinary.uploader.destroy( clubs.logo );
+        // await clubModel.cloudinary.uploader.destroy(clubs.logo );
+        return res.json(clubs)
+        console.log('deleted')
+    // // Upload the new image to Cloudinary
+    //     const result = await cloudinary.uploader.upload(req.file.path);
+    // // const result = await clubModel.upload.upload.single( 'logo' )( req, res );
+    // // Update the profileImage field with the new image URL
+    // // clubs.publicId = result.public_id;
+    // clubs.league = league || clubs.league;
+    // clubs.club = club || clubs.club;
+    // clubs.logo = result.secure_url;
 
-      // Update the profileImage field with the new image URL
-        clubs.logo = result.secure_url;
-        clubs.logo = req.file.path;
-        // clubs.publicId = result.public_id;
-        clubs.league = league || clubs.league;
-    clubs.club = club || clubs.club;
-
-    await clubs.save();
-    // console.log( `new club: ${clubs}` );
-
-    res.json(clubs);
-    }
+    // const updatedClub = await clubs.save();
+    //     res.status( 200 ).json( {
+    //         message: "Updated successfully.",
+    //         data: updatedClub
+    // })
     
   } catch (error) {
     res.status(500).json({ error: 'Failed to update image' });

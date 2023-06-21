@@ -1,0 +1,35 @@
+{
+  "name": "files-with-multer-and-cloudinary",
+  "version": "1.0.0",
+  "description": "simple bank profile CRUD with file upload using multer and cloudinary",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "node",
+    "nodemon",
+    "express",
+    "mongoDB",
+    "mongoose",
+    "multer",
+    "cloudinary",
+    "crud",
+    "joi",
+    "happy",
+    "validation"
+  ],
+  "author": "Ubani U. Friday",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "cloudinary": "^1.37.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
