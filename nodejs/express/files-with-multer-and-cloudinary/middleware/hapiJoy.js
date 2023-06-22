@@ -28,7 +28,7 @@ module.exports = validateProfile;
 //     profileImage: Joi.string().required()
 //     } );
     
-//     schema.validate( data );
+//     return schema.validate( data );
 // }
 
 // module.exports.validateProfile = validateProfile;
