@@ -77,27 +77,58 @@ const signIn = async ( req, res ) => {
     }
 }
 
-// signOut
-const blackList = []
+// // signOut
+// const blackList = []
+// const signOut = async (req, res) => {
+//     try {
+//         // check for content in the authorization head
+//         const authHeader = req.headers.authorization;
+//         // get the token from the authorization head
+//         const token = authHeader.split( " " )[ 1 ];
+//         // remove the token from the authentication head and place it in the blacklist array.
+//         await blackList.push( token );
+//         // return a success response
+//         res.status(200).json({
+//         status: "Success",
+//         message: "User logged out successfully.",
+//         });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
 const signOut = async (req, res) => {
     try {
-        // check for content in the authorization head
-        const authHeader = req.headers.authorization;
         // get the token from the authorization head
-        const token = authHeader.split( " " )[ 1 ];
-        // remove the token from the authentication head and place it in the blacklist array.
-        await blackList.push( token );
-        // return a success response
-        res.status(200).json({
-        status: "Success",
-        message: "User logged out successfully.",
-        });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
+        const token = req.headers.authorization;
+
+        // find the user by the token
+        const user = await userModel.find( { token } );
+
+        if ( !user ) {
+            return res.status( 401 ).json( {
+                message: "Invalid token"
+            })
+        }
+
+        // clear the token
+        user.token = '';
+
+        // save the user with the saved token
+        // await user.save();
+
+        return res.status( 200 ).json( {
+            message: "User signed out successfully"
+        })
+    } catch ( error ) {
+        console.error( "Something went wrong", error.message );
+        res.status( 500 ).json( {
+            message: error.message
+        })
+    }
+}
 
 const genToken = async ( user ) => {
     const token = await jwt.sign( {
